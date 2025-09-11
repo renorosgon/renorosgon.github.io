@@ -1,0 +1,29 @@
+---
+title: "RENE ROSADO GONZALEZ"
+subtitle: "Social Data Scientist | PhD Student at CUHK"
+# `profile.jpg` photo by Jan Tinneberg on https://unsplash.com
+image: profile.jpg
+about: # https://quarto.org/docs/websites/website-about.html
+  template: jolla
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/renorosgon
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/rene-rosado-gonzalez/
+---
+### About me
+I’m passionate about connecting data science and computational methods, political economy, and public policy. I am currently exploring how digital technologies can help us uncover new insights into political polarization and social change. My goal is to bridge rigorous research with meaningful public conversations, sparking ideas that lead to smarter, more compassionate policies.
+
+Before starting my PhD, I was Program Director of the B.A. in Governance and Public Transformation at Tecnologico de Monterrey. Here I taught courses on data science for decision making and the public good, applied economics, and public innovation, along with introductory courses on text analytics and NLP. I truly enjoyed helping students see how advanced analytics can be applied to real-world challenges, making learning both meaningful and exciting.
+
+## Education
+
+University of XYZ, City \| Location \| Sept 20XX - June 20XX
+
+University of XYZ, City \| Location \| Sept 20XX - June 20XX
+
+## Experience
+
+Workplace \| Job title \| April 20XX - present
