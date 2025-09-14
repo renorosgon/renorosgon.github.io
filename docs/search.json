@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "RENE ROSADO GONZALEZ",
+    "title": "RENÉ ROSADO GONZÁLEZ",
     "section": "",
-    "text": "I’m passionate about connecting data science and computational methods, political economy, and public policy. I am currently exploring how digital technologies can help us uncover new insights into political polarization and social change. My goal is to bridge rigorous research with meaningful public conversations, sparking ideas that lead to smarter, more compassionate policies.\nBefore starting my PhD, I was Program Director of the B.A. in Governance and Public Transformation at Tecnologico de Monterrey. Here I taught courses on data science for decision making and the public good, applied economics, and public innovation, along with introductory courses on text analytics and NLP. I truly enjoyed helping students see how advanced analytics can be applied to real-world challenges, making learning both meaningful and exciting."
+    "text": "About me\nI’m passionate about connecting data science and computational methods with society. I am currently exploring how digital technologies can help us uncover new insights into political polarization and social change. My goal is to bridge rigorous research with meaningful public conversations, sparking ideas that lead to smarter, more compassionate policies."
   },
   {
     "objectID": "index.html#education",
@@ -47,5 +47,19 @@
     "title": "First Post",
     "section": "",
     "text": "Sed risus ultricies tristique nulla aliquet. Neque volutpat ac tincidunt vitae semper quis lectus nulla.\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Enim sed faucibus turpis in eu mi bibendum neque. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu. Velit sed ullamcorper morbi tincidunt ornare massa. Sagittis id consectetur purus ut faucibus pulvinar elementum integer. Tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin libero. Lobortis feugiat vivamus at augue eget arcu. Aliquam ut porttitor leo a diam sollicitudin tempor id eu. Mauris a diam maecenas sed enim ut sem viverra aliquet. Enim ut tellus elementum sagittis vitae et leo duis. Molestie at elementum eu facilisis sed odio morbi quis commodo. Sapien pellentesque habitant morbi tristique senectus. Quam vulputate dignissim suspendisse in est. Nulla pellentesque dignissim enim sit amet venenatis urna cursus eget.\nVelit aliquet sagittis id consectetur purus ut faucibus pulvinar elementum. Viverra mauris in aliquam sem fringilla ut morbi tincidunt augue. Tortor at auctor urna nunc id. Sit amet consectetur adipiscing elit duis tristique sollicitudin. Aliquet nibh praesent tristique magna sit amet purus. Tristique senectus et netus et malesuada fames ac turpis. Hac habitasse platea dictumst quisque. Auctor neque vitae tempus quam pellentesque nec nam aliquam. Ultrices tincidunt arcu non sodales neque sodales ut etiam. Iaculis at erat pellentesque adipiscing. Cras tincidunt lobortis feugiat vivamus. Nisi est sit amet facilisis magna etiam. Pharetra pharetra massa massa ultricies mi quis hendrerit. Vitae sapien pellentesque habitant morbi tristique senectus. Ornare aenean euismod elementum nisi quis eleifend quam adipiscing vitae."
+  },
+  {
+    "objectID": "index.html#footnotes",
+    "href": "index.html#footnotes",
+    "title": "RENÉ ROSADO GONZÁLEZ",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://www.soc.cuhk.edu.hk/people/research-postgraduate-students-2/doctoral-degree-programme/↩︎"
+  },
+  {
+    "objectID": "blog/index.html",
+    "href": "blog/index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "First Post\n\n\nPost description for first post\n\n\n\n\n\nMay 22, 2021\n\n\nAlicia\n\n\n\n\n\n\n\n\n\n\n\n\nSecond Post\n\n\nPost description for second post\n\n\n\n\n\nMay 23, 2021\n\n\n\n\n\n\n\n\n\n\n\n\nThird Blog Post\n\n\nAn example post where the source document is a Jupyter Notebook\n\n\n\n\n\nMay 24, 2021\n\n\nAlicia\n\n\n\n\n\nNo matching items"
   }
 ]
