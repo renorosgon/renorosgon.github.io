@@ -17,13 +17,13 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 Popular culture has evolved beyond mere entertainment; it has become a significant medium for self-expression and social connection. In Indonesia, a surprising symbol of rebellion, adventure, and resistance against oppression has emerged among protesters. But how strong is the symbolic significance of this emblem? In this post, we will explore how data from the entertainment industry can illuminate the role of *One Piece* in Indonesia’s protests. By employing causal inference methods and data from [Parrot Analytics](https://www.parrotanalytics.com), we aim to determine whether the popularity of this fictional world reflects real-life actions and what this reveals about the relationship between pop culture and social change.
 
-#### Quick context on Indonesia and the recent protest.
+###  Quick context on Indonesia and the recent protest.
 
 Recently, Indonesia has seen a wave of protests fueled by economic and political frustrations, along with rising uncertainty about the future. Since late July, truck drivers in the country have started waving the Jolly Roger flag as a way to protest new transport regulations. What began as a viral trend on social media quickly turned into a collective movement, with demonstrators nationwide raising the flag to symbolize their discontent during Indonesia's 80^th^ National Day.
 
 ![Source: TikTok/@tiktokhubpages](img0.jpg)
 
-The [Jolly Roger flag of the Straw Hat Pirates](https://en.wikipedia.org/wiki/Straw_Hat_Pirates%27_Jolly_Roger) from [*One Piece*](https://en.wikipedia.org/wiki/One_Piece_(1999_TV_series)), a hugely popular Japanese *manga* and *anime* series with over 1,100 episodes aired in more than 80 countries, symbolizes the adventurous and rebellious spirit of Monkey D. Luffy and his crew, who stand against a globally oppressive and corrupt government. Interestingly, protesters have adopted this flag as a symbol of collective identity; it represents not only the desire to end corruption but also embodies the *Mugiwaras*' promise of freedom and justice. Émile Durkheim believed that symbols, along with shared beliefs and values, create a collective consciousness that holds society together. This illustrates that popular culture does more than entertain us; it shapes our daily lives and provides us with meaningful symbols that can inspire action. Such symbols transcend the fictional realm and become part of real-world struggles.
+The [Jolly Roger flag of the Straw Hat Pirates](https://en.wikipedia.org/wiki/Straw_Hat_Pirates%27_Jolly_Roger) from [*One Piece*](https://en.wikipedia.org/wiki/One_Piece_(1999_TV_series)), a hugely popular Japanese *manga* and *anime* series with over 1,100 episodes aired in more than 80 countries, symbolizes the adventurous and rebellious spirit of Monkey D. Luffy and his crew, who stand against a globally oppressive and corrupt government. Interestingly, protesters have adopted this flag as a symbol of collective identity; it represents not only the desire to end corruption but also embodies the *Mugiwaras*' promise of freedom and justice. Émile Durkheim believed that symbols, along with shared beliefs and values, create a [collective consciousness](https://en.wikipedia.org/wiki/Collective_consciousness) that holds society together. This illustrates that popular culture does more than entertain us; it shapes our daily lives and provides us with meaningful symbols that can inspire action. Such symbols transcend the fictional realm and become part of real-world struggles.
 
 ![Copyright: Claudio Pramana/NurPhoto](cover.jpg)
 
@@ -31,13 +31,13 @@ Stories like *One Piece* play a significant role in shaping the social landscape
 
 ![](img1.jpg)
 
-#### How strong is the symbolic significance of One Piece is for the social movement in Indonesia?
+###  How strong is the symbolic significance of One Piece is for the social movement in Indonesia?
 
 When we refer to symbolic value, we are usually talking about the subjective importance that comes from the meanings, associations, and messages expressed within a specific socio-cultural context. However, in today’s information age, we have the tools to evaluate, to some degree, the significance of an object, idea, action, or, in this case, a piece of content within the collective consciousness.
 
-The [Demand Expressions™](https://www.parrotanalytics.com/academy/learn-the-methodology-behind-demand-measurement) data from [Parrot Analytics](https://www.parrotanalytics.com) captures audience attention, engagement, desire, and viewership across all markets, in all languages, and across all platforms and devices.  I am using weekly demand data from June 1^st^ to September 13^th^ in a difference-in-differences (DiD) regression model to analyze whether interest in "One Piece" in Indonesia has changed significantly compared to other Southeast and East Asian markets since the start of the Jolly Roger flag protest. I am working under the assumption that if the results show a positive and significant difference, the varying demand for "One Piece" in Indonesia, relative to its average performance in the region, can be attributed to its symbolic significance for the collective identity of the protest.
+The [Demand Expressions™](https://www.parrotanalytics.com/academy/learn-the-methodology-behind-demand-measurement) data from [Parrot Analytics](https://www.parrotanalytics.com) captures audience attention, engagement, desire, and viewership across all markets, in all languages, and across all platforms and devices.  I am using weekly demand data from June 1^st^ to September 13^th^ in a difference-in-differences (DiD) regression model to analyze whether interest in *One Piece* in the Indonesian market has changed significantly compared to other Southeast and East Asian markets since the start of the Jolly Roger flag protest. I am working under the assumption that if the results show a positive and significant difference, the varying demand for *One Piece* in Indonesia, relative to its average performance in the region, can be attributed to its symbolic significance for the collective identity of the protest.
 
-#### Estimating a DiD regression model in R
+###  Estimating a DiD regression model in R
 The first step is to start our `R session` and load the `tidyverse` toolkit for our analysis. I recommend using extensions for `ggplot2`, such as `ggalt` and `ggtext`, as they offer greater control over the customization of our visuals. Finally, I utilize `stargazer` to create well-formatted regression tables for presenting my results.
 
 ```{r warning=FALSE, message=FALSE}
@@ -56,7 +56,7 @@ data = readxl::read_excel(
   mutate(date = ymd(date))
 ```
 
-The next step is to plot the average weekly per-capita demand for "One Piece" over time in Indonesia, East Asia, and Southeast Asia (excluding Indonesia), while also comparing it to the overall regional average. I included East Asia in the analysis for two main reasons. First, to account for variations in the popularity of the show within the Asian market, such as new episode releases or events like [*One Piece Day*](https://onepiece-day.onepiece-base.com/en). Second, to control for potential spillover effects that the protests in Indonesia may have generated in other Southeast Asian markets, such as Nepal. The graph below illustrates that after the Jolly Roger flag protest began, the demand for the show in Indonesia peaked at `1.88` times higher than the average demand in the region.
+The next step is to plot the average weekly per-capita demand for *One Piece* over time in Indonesia, East Asia, and Southeast Asia (excluding Indonesia), while also comparing it to the overall regional average. I included East Asia in the analysis for two main reasons. First, to account for variations in the popularity of the show within the Asian market, such as new episode releases or events like [*One Piece Day*](https://onepiece-day.onepiece-base.com/en). Second, to control for potential spillover effects that the protests in Indonesia may have generated in other Southeast Asian markets, such as Nepal. The graph below illustrates that after the Jolly Roger flag protest began, the demand for the show in Indonesia peaked at `1.88` times higher than the average demand in the region.
 
 ```{r }
 #| label: fig-plot1
@@ -70,10 +70,10 @@ labels = data %>%
   # This trick is just to have a nice label
   mutate(
     market = ifelse(
-      # For the 'South East Asia' label
+      # For the 'Southeast Asia' label
       test = market == 'Southeast Asia',
       # Add a nice line break and centered text
-      yes = 'Southeast\n     Asia', 
+      yes = 'Southeast east\n     Asia', 
       # The rest stay the same
       no = market
       )
@@ -229,7 +229,7 @@ ggplot(
     subtitle = 'Overall region demand multiplier (x Times average demand for One Piece)',
     caption = 'Source: own elaboration with data from Parrot Analytics\nAuthor:@renorosgo'
   ) +
-  # Modify color scale (I repeated blue to match our modified label of South East Asia)
+  # Modify color scale (I repeated blue to match our modified label of Southeast East Asia)
   scale_color_manual(values = c('green4','red2','blue2','blue')) +
   # Modify x axis limits
   scale_x_date(limits = c(min_date, max_date + 10), date_labels = "%b-%Y") +
@@ -312,8 +312,8 @@ ggplot(
   facet_wrap(~market) +
   # Add labels
   labs(
-    title = 'Weekly Demand Performance for One Piece in South and East Asia',
-    subtitle = expression(paste(italic('Before'),' and ', italic('After'),' average demand multiplier (x Times average demand for One Piece in the region)')),
+    title = 'Effect of the Jolly Roger flag protest in Weekly Demand Performance\nfor One Piece in Southeast and East Asia',
+    subtitle = 'Average demand multiplier (x Times average demand for One Piece in the region)',
     caption = 'Source: own elaboration with data from Parrot Analytics\nAuthor:@renorosgo'
   ) +
   # Modify colors
@@ -348,8 +348,8 @@ ggplot(
   stat_summary(geom = 'pointrange', fun.data = 'mean_se', fun.args = list(mult = 1.96)) +
   # Add labels
   labs(
-    title = ' Average Weekly Performance for One Piece in South and East Asia',
-    subtitle = expression(paste(italic('Before'),' and ', italic('After'),' average demand multiplier (x Times average demand for One Piece in the region)')),
+    title = 'Effect of the Jolly Roger flag protest in Weekly Demand Performance\nfor One Piece in East and  Southeast Asia (June 1st to September 13th)',
+    subtitle = 'Average demand multiplier (x Times average demand for One Piece in the region)',
     caption = 'Source: own elaboration with data from Parrot Analytics\nAuthor:@renorosgo'
   ) +
   scale_x_continuous(breaks = c(0,1), labels = c('Before', 'After'), limits = c(-0.25,1.25)) +
@@ -371,7 +371,7 @@ ggplot(
   )
 ```
 
-#### DiD explained step by step
+###  DiD explained step by step
 
 To gain a better understanding of the DiD procedure, we can create a table that displays the average values for both Indonesia and the control markets before and after the intervention. This table will show the average values prior to the Jolly Roger Flag's protest, as well as the averages after the protest. 
 
@@ -421,7 +421,7 @@ after_treatment = data %>%
 | Control Market     | C                             | D                            | D - C                                           |
 | Average Difference | A - C                         | B - D                        | (B - A) - (D - C)                               |
 
-Let's calculate the average for the Southeast Asian market, which will act as our control group. We can follow the same steps as in our previous analysis, making just a few modifications to our code to complete the rest of the table. After our intervention, we observed that the change in the demand multiplier for the control group was `-0.01`. By subtracting the average difference of the control group from the average difference of the treated group, we can determine our DiD estimation. Our calculations show that the average impact of the Jolly Roger Flag protest on the demand performance of One Piece resulted in an increase of approximately `0.16` units in the multiplier compared to the average market in Southeast Asia.
+Let's calculate the average for the Southeast Asian market, which will act as our control group. We can follow the same steps as in our previous analysis, making just a few modifications to our code to complete the rest of the table. After our intervention, we observed that the change in the demand multiplier for the control group was `-0.01`. By subtracting the average difference of the control group from the average difference of the treated group, we can determine our DiD estimation. Our calculations show that the average impact of the Jolly Roger Flag protest on the demand performance of *One Piece* resulted in an increase of approximately `0.16` units in the multiplier compared to the average market in Southeast Asia.
 
 ```{r echo=TRUE}
 # Filter our interest market
@@ -490,8 +490,8 @@ ggplot(data = data_se, mapping = aes(x = intervention, y = region_multiplier)) +
     ) +
   # Add labels
   labs(
-     title = ' Average Weekly Demand Expressions™ for One Piece in Southeast and East Asia',
-    subtitle = expression(paste(italic('Before'),' and ', italic('After'),' average demand multiplier (x Times average demand for One Piece in the region)')),
+     title = bquote('Effect of the Jolly Roger flag protest in Weekly Demand Performance\nfor One Piece in Southeast Asia (June 1st to September 13th)'),
+    subtitle = 'Average demand multiplier (x Times average demand for One Piece in the region)',
     caption = 'Source: own elaboration with data from Parrot Analytics\nAuthor:@renorosgo',
     color = "Mean"       # Legend title
   ) +
@@ -517,28 +517,53 @@ ggplot(data = data_se, mapping = aes(x = intervention, y = region_multiplier)) +
   )
 ```
 
-A key requirement for the validity of the difference-in-differences method is the **parallel trend assumption**. This assumption posits that, in the absence of the intervention, the treated group and the control group would have exhibited similar trends or patterns in their outcomes over time. In simpler terms, had there been no changes related to the protest, the demand performance of One Piece in both markets would likely have followed a similar trajectory.
+A key requirement for the validity of the difference-in-differences method is the *parallel trend assumption*. This assumption posits that, in the absence of the intervention, the treated group and the control group would have exhibited similar trends or patterns in their outcomes over time. In simpler terms, had there been no changes related to the protest, the demand performance of *One Piece* in both markets would likely have followed a similar trajectory.
 
 This assumption allows us to attribute any differences in trends observed after the intervention to the effect of the Jolly Roger protest, rather than to other factors or inherent differences between the groups. Essentially, it ensures that the only systematic difference noted after the intervention is due to the treatment itself. This validation supports the causal interpretation of the difference-in-differences estimate. The following plot provides a graphic representation of our parallel trend assumption, illustrated with a blue dashed line. The potential impact of the Jolly Roger flag protest in Indonesia is indicated by a vertical red dashed line.
 
 ```{r}
-#| label: fig-plot5
+# Min x for segment annotation
+min_x = data_se %>% 
+  filter(date >= cutoff) %>% 
+  pull(date) %>% min()
+
+# Max x for segment annotation
+max_x = data_se %>% 
+  filter(date >= cutoff) %>% 
+  pull(date) %>% max()
+  
 # Create a ggplot canvas
 ggplot(
-  data = did_df, 
-  mapping = aes(x = intervention, y = values, color = market)
+  # Data to plot
+  data = data_se, 
+  # Data-related aesthetics
+  mapping = aes(x = date, y = region_multiplier, col = market)
   ) +
-  # Add our initial values
-  geom_point(mapping = aes(x = intervention, y = values)) +
-  # Add the gray shape
-  geom_point(mapping = aes(x = intervention, y = values), shape = 13, size = 4, col = 'gray40') +
-  # Add the original line
-  geom_line() +
-  # Draw the parallel trend
+  # Add vertical line
+  geom_vline(
+    # This is the week when the first flag was shown (at least in the news)
+    xintercept = c(cutoff) - 3,
+    # Modify the aesthetics
+    linetype = 'dashed', col = 'gray60'
+    ) +
+    # Add point
+  geom_point(size = 1, alpha = 0.25) +
+  # Add a dashed line with the average multiplier for the Before
+  stat_smooth(
+    data = filter(data_se, date < cutoff),
+    mapping = aes(x = date, y = average_multiplier, col = market),
+    method = 'lm', linewidth = 0.25
+  ) +
+   # Add a dashed line with the average multiplier for the After
+  stat_smooth(
+    data = filter(data_se, date >= cutoff),
+     mapping = aes(x = date, y = average_multiplier, col = market),
+    method = 'lm', linewidth = 0.25
+  ) +# Draw the parallel trend
   annotate(
     geom = 'segment',
     # Set coordinates
-    x = 0, xend = 1, y = before_treatment, yend = after_treatment - diff_in_diff,
+    x = min_x, xend = max_x, y = before_treatment, yend = after_treatment - diff_in_diff,
     # Set aesthetics
     linetype = 'dashed', col = 'blue2', linewidth = 0.75
   ) +
@@ -546,7 +571,7 @@ ggplot(
   annotate(
     geom = 'segment',
     # Set coordinates
-    x = c(0,1), xend = c(0,1), y = before_treatment, yend = before_control,
+    x = c(min_x, max_x), xend = c(min_x, max_x), y = before_treatment, yend = before_control,
     # Set aesthetics
     linetype = 'dotted', col = 'gray50'
   ) +
@@ -554,23 +579,60 @@ ggplot(
   annotate(
     geom = 'segment',
     # Set coordinates
-    x = 1, xend = 1, y = before_treatment, yend = after_treatment,
+    x = c(min_x, max_x), xend = c(min_x, max_x), y = before_treatment, yend = after_treatment,
     # Set aesthetics
     linetype = 'dashed', col = 'red2', linewidth = 0.75
   ) +
+  # Add text
+  annotate(
+    geom = 'text', label = 'Indonesia before protest', 
+    # Set coordinates
+    x = c(ymd('2025-06-02')), y = before_treatment + 0.1,
+    # Set aesthetics
+    size = 3.5, color = 'red', hjust = 0
+    ) +
+  # Add text
+  annotate(
+    geom = 'text', label = 'Southeast Asia before protest', 
+    # Set coordinates
+    x = c(ymd('2025-06-02')), y = before_control + 0.1,
+    # Set aesthetics
+    size = 3.5, color = 'blue2', hjust = 0
+    ) +
+  # Add text
+  annotate(
+    geom = 'text', label = 'Indonesia after protest', 
+    # Set coordinates
+    x = min_x + 1, y = after_treatment + 0.1,
+    # Set aesthetics
+    size = 3.5, color = 'red', hjust = 0
+    ) +
+  # Add text
+  annotate(
+    geom = 'text', label = 'Southeast Asia after protest', 
+    # Set coordinates
+    x = min_x + 1, y = after_control + 0.1,
+    # Set aesthetics
+    size = 3.5, color = 'blue2', hjust = 0
+    ) +
+  # Add text
+  annotate(
+    geom = 'text', label = 'Indonesia "without" intervention\n(parallel trend assumption)', 
+    # Set coordinates
+    x = min_x + 1, y = after_treatment - diff_in_diff - 0.1,
+    # Set aesthetics
+    size = 3.5, color = 'blue2', hjust = 0, fontface = "bold"
+    ) +
   # Add labels
   labs(
-     title = 'Difference in differences parrallel trend assumption',
-    subtitle = expression(paste(italic('Before'),' and ', italic('After'),' average demand multiplier (x Times average demand for One Piece in the region)')),
-    caption = 'Source: own elaboration with data from Parrot Analytics\nAuthor:@renorosgo',
-    color = "Mean"  
+    title = 'Difference-in-differences parallel trend assumption',
+    subtitle = 'Average demand multiplier (x Times average demand for One Piece in the region)',
+    caption = 'Source: own elaboration with data from Parrot Analytics\nAuthor:@renorosgo'
   ) +
-  # Modify X axis limits and labels
-  scale_x_continuous(breaks = c(0,1), labels = c('Before', 'After'), limits = c(-0.25,1.25)) +
-  # Modify Y axis limits and units
-  scale_y_continuous(limits = c(0.5,1.8), labels = scales::unit_format(suffix = 'x')) +
-  # Set colors
+  # Modify colors
   scale_color_manual(values = c('red2','blue2')) +
+  # Modify Y axis limits and units
+  scale_y_continuous(limits = c(0.5,2), labels = scales::unit_format(suffix = 'x')) +
   # Set the base theme
   theme_bw(paper =  'gray99', base_family = 'Avenir Next') +
   # Additional tweaks to the theme 
@@ -600,7 +662,7 @@ The following table displays the results of our linear regression, which uses th
 
 The advantage of conducting this statistical analysis is that it allows us to assess the statistical significance of our findings. As we can observe, the estimate of `-0.01` for the `intervention` variable, which we calculated earlier, is not statistically significant. This means it is not significantly different from zero, indicating that our control market did not experience any change in average performance following the onset of the Jolly Roger flag protest.
 
-In contrast, estimates that are statistically significant are considered different from zero. Specifically, our Difference-in-Differences (DiD) estimator indicates an increase of `0.16` units in the multiplier when compared to the control group, which can be attributed to the Jolly Roger flag protest associated with One Piece.
+In contrast, estimates that are statistically significant are considered different from zero. Specifically, our Difference-in-Differences (DiD) estimator indicates an increase of `0.16` units in the multiplier when compared to the control group, which can be attributed to the Jolly Roger flag protest associated with *One Piece*.
 
 ```{r}
 model_1 = lm(
@@ -626,7 +688,7 @@ To strengthen the validity of the Southeast Asia model, we will estimate a new D
 
 Consistent with the previous model, the East Asia model shows a significant increase of `0.16` units in the multiplier compared to the average East Asian market. Additionally, we do not observe any significant impact from the Jolly Roger flag protest in the control market.
 
-```{r results}
+```{r }
 model_2 = data %>% 
   # Filter to remove the Southeast market
   filter(market != 'Southeast Asia') %>% 
@@ -645,11 +707,34 @@ stargazer(
   )
 ```
 
-#### Long story short
+Finally, we can examine potential short-term spillovers in the Southeast Asian markets by applying the same methodology. We will designate the average Southeast Asian market as our treatment group, while the average East Asian market will serve as our control group for the DiD regression. The table below shows that neither the `intervention` nor the `DiD` estimates are statistically significant. This indicates that we cannot find evidence of any differentiated behavior between these two markets following the intervention. At least for the analyzed period, there were no short-term spillover effects observed in the average Southeast Asian market.
+
+```{r }
+model_3 = data %>% 
+  # Filter to remove the Southeast market
+  filter(market != 'Indonesia') %>% 
+  mutate(
+    treatment = ifelse(market == 'Southeast Asia', 1, 0),
+    DiD = treatment * intervention) %>% 
+  # Run the regresion
+  lm(formula = region_multiplier ~ intervention + treatment + `DiD`)
+```
+```{r results='asis', echo=FALSE}
+#| tbl-align: center
+stargazer(
+  model_3,
+  type = "html", 
+  dep.var.labels = "Demand Multiplier",
+  notes = c("<sup>&sstarf;</sup>p<0.1; <sup>&sstarf;&sstarf;</sup>p<0.05; <sup>&sstarf;&sstarf;&sstarf;</sup>p<0.01"),
+  notes.append = FALSE
+  )
+```
+
+###  Long story short...
 
 We have seen the profound power of *One Piece* and its iconic Jolly Roger flag,which extend beyond mere entertainment and resonate deeply within Indonesia’s protest movement. Statistical methods like difference-in-differences support this connection, reminding us that symbols like *One Piece* embody collective hopes and desires, serving as cultural anchors during times of social upheaval.
 
-How significant is *One Piece* for the Jolly Roger protests in Indonesia? Our analysis reveals that interest in the series surged by nearly `9.5%` in response to the protests. Given that the manga has sold over 516 million copies and the anime has amassed millions of viewing hours on platforms like Netflix, this increase underscores how popular culture can unite communities in their shared aspirations for change and justice. Ultimately, this case illustrates that entertainment and storytelling are not merely forms of escapism; they are vital forces that shape social identities and inspire collective action. As societies continue to evolve, embracing these cultural dynamics becomes essential for engaging with and interpreting contemporary social movements.
+What is the symbolic value of *One Piece* for the Jolly Roger protests in Indonesia? Our analysis reveals that it is at least enough to raise the demand of the series, which manga has sold over 516 million copies and anime has amassed millions of viewing hours on platforms like Netflix, surged by nearly `9.5%` in response to the protests. This increase underscores how popular culture can unite communities in their shared aspirations for change and justice. 
 
 ```{r }
 #| label: fig-plot6
@@ -745,3 +830,6 @@ data %>%
     legend.position = 'none'
   )
 ```
+
+Ultimately, this case illustrates that entertainment and storytelling are not merely forms of escapism; they are vital forces that shape social identities and inspire collective action. As societies continue to evolve, embracing these cultural dynamics becomes essential for engaging with and interpreting contemporary social movements.
+
