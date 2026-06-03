@@ -1,0 +1,383 @@
+---
+title: "El mapa de la segunda vuelta: ¿dónde se gana Colombia el 21 de junio?"
+author: "René Rosado González"
+date: "2026-06-02"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    code-summary: "Show the code"
+    fig-width: 8
+    fig-height: 10
+    fig-align: center
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+  cache: true
+image: "img1.jpg"
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+# ---------------------------------------------------------------------------
+# Paquetes. Primera vez, descomenta:
+# install.packages(c("sf", "ggplot2", "dplyr", "biscale", "cowplot",
+#                    "stringi", "readr", "cartogram", "packcircles", "tidyr"))
+# ---------------------------------------------------------------------------
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(biscale)
+library(cowplot)
+library(stringi)
+library(readr)
+library(cartogram)
+library(packcircles)
+library(tidyr)
+library(patchwork)
+
+# ---------------------------------------------------------------------------
+# 1. Datos electorales (formato ancho) y geometría de departamentos
+#    Coloca los CSV en la misma carpeta del .qmd
+# ---------------------------------------------------------------------------
+datos <- read_csv("datos_electorales_colombia.csv", show_col_types = FALSE)
+
+geo_url <- "https://raw.githubusercontent.com/santiblanko/colombia.geojson/master/depto.json"
+mapa <- st_read(geo_url, quiet = TRUE)
+
+# ---------------------------------------------------------------------------
+# 2. Normalizar nombres para unir CSV con geometría
+# ---------------------------------------------------------------------------
+norm <- function(x) toupper(trimws(stri_trans_general(x, "Latin-ASCII")))
+
+recodificar <- c(
+  "SANTAFE DE BOGOTA D.C"                                   = "Bogota D.C",
+  "ARCHIPIELAGO DE SAN ANDRES PROVIDENCIA Y SANTA CATALINA" = "San Andres y Providencia",
+  "NARINO"                                                  = "Narino"
+)
+
+mapa <- mapa %>%
+  mutate(depto_join = ifelse(NOMBRE_DPT %in% names(recodificar),
+                             recodificar[NOMBRE_DPT], NOMBRE_DPT),
+         depto_norm = norm(depto_join))
+
+datos <- datos %>% mutate(depto_norm = norm(departamento))
+mapa_datos <- left_join(mapa, datos, by = "depto_norm")
+
+# verificación del join (debe quedar vacío)
+faltan <- mapa_datos %>% filter(is.na(pct_cepeda)) %>% pull(NOMBRE_DPT)
+if (length(faltan) > 0) message("Sin datos: ", paste(faltan, collapse = ", "))
+
+# leyenda bivariada reutilizable (Cepeda vs De la Espriella)
+leyenda_ce <- bi_legend(pal = "DkViolet2", dim = 3,
+                        xlab = "Mas De la Espriella →",
+                        ylab = "Mas Cepeda →", size = 7)
+```
+
+Las elecciones rara vez se ganan donde uno cree. Se ganan en los márgenes, en esos territorios que no aparecen en los discursos de victoria pero que deciden, voto a voto, quién ocupa la Casa de Nariño. Colombia acaba de entregar un resultado que pocos anticipaban y que ahora obliga a leer el país no como un bloque, sino como un mosaico de regiones con lógicas propias. En esta nota quiero usar los datos departamentales de la primera vuelta para anticipar dónde se jugará realmente la elección del 21 de junio, y qué tendría que pasar en cada esquina del mapa para que Iván Cepeda o Abelardo de la Espriella terminen gobernando.
+
+![Fuente: BBC](img1.jpg)
+
+
+El 31 de mayo de 2026 Colombia votó, y el resultado desordenó los pronósticos. Abelardo de la Espriella lideró la primera vuelta con el 43,74 %, más de 10,3 millones de votos, seguido de Iván Cepeda con 40,9 %, casi 9,7 millones de votos. La diferencia entre ambos fue de 673.168 votos, suficiente para marcar una tendencia pero demasiado estrecha para cerrar la conversación. Contra buena parte de los pronósticos que durante meses dieron como favorito al candidato oficialista, fue el outsider quien resultó más votado, mientras Cepeda parece haber alcanzado un techo con su base electoral sin lograr la victoria contundente que buscaba el gobierno.
+
+Ninguno de los aspirantes alcanzó la mayoría absoluta, por lo que los colombianos deberán regresar a las urnas el 21 de junio. Y el tablero ya empezó a moverse antes del primer acto de campaña: la senadora Paloma Valencia fue una de las primeras en oficializar su respaldo a De la Espriella, llamando a "derrotar a Cepeda" y a que "el neocomunismo no continúe". Esa adhesión, como veremos, es el primer dato duro que cambia la aritmética del mapa.
+
+## La regla del 50 % más uno
+
+Antes de leer el mapa conviene recordar las reglas del juego, porque definen exactamente qué están persiguiendo las dos campañas. El esquema de balotaje fue incluido en la Constitución de 1991 a través del artículo 190, que establece las condiciones para repetir los comicios cuando el aspirante más votado no supera el 50 % de los sufragios válidos. El mecanismo se incorporó para garantizar que el presidente electo cuente con un respaldo mayoritario, y en la práctica el ganador debe superar el 50 % más uno de los votos válidos.
+
+La consecuencia es sencilla de enunciar y brutal de ejecutar. En segunda vuelta no basta con ser el más votado, hay que ser la mitad del país. Desde 1991 solo Álvaro Uribe ha conseguido evitar el balotaje, en 2002 y 2006; todas las demás elecciones se han definido en segunda vuelta. Y el precedente más reciente debería poner nerviosos a ambos comandos de campaña. En 2022 Gustavo Petro ganó la segunda vuelta con 50,44 % frente al 47,31 % de Rodolfo Hernández, una diferencia de cerca de 700.000 votos. Es decir, hace cuatro años la izquierda ganó por un margen casi idéntico al que hoy la separa de la derecha. Los techos y los pisos electorales en Colombia son estrechos, y eso convierte a cada departamento en una pieza que cuenta.
+
+## Quiénes son Cepeda y De la Espriella
+
+Vale la pena detenerse en quiénes son, porque la geografía del voto se entiende mejor a la luz de sus biografías.
+
+::: {layout="[[30, 70], [70, 30]]" fig-gap="2em"}
+
+![Fuente: Wikipedia](img2.jpg){width="85%"}
+
+**Iván Cepeda** encarna la izquierda de raíces históricas. Nacido en Bogotá en 1962, es político, defensor de derechos humanos y filósofo, actualmente senador y candidato del Pacto Histórico; preside la Comisión de Paz del Senado y fue facilitador del acuerdo de paz con las FARC firmado en 2016. Es hijo de Manuel Cepeda Vargas, dirigente de la Unión Patriótica asesinado en 1994 por agentes del Estado en colaboración con paramilitares, un peso simbólico que ha marcado toda su trayectoria pública. Tras 16 años en el Congreso, busca la continuidad de la agenda del presidente Gustavo Petro y ganó reconocimiento por sus enfrentamientos con el expresidente Álvaro Uribe.
+
+
+**Abelardo de la Espriella** es abogado y empresario nacido en Bogotá en 1978 pero criado en Montería, busca la Presidencia con el movimiento Defensores de la Patria, fundado en 2024, cuyas banderas son la seguridad, la educación y la anticorrupción. Antes de la política se hizo un nombre como cotizado abogado de clientes controvertidos, como el empresario colombo-venezolano Álex Saab, y se presentó como una suerte de redentor con un decálogo de propuestas. Su plan de gobierno combina un discurso anticomunista, el rechazo a una Asamblea Constituyente y una agenda de intervención institucional inmediata, en la línea del liderazgo que hoy admira abiertamente: el de Javier Milei, Nayib Bukele y Donald Trump.
+
+![Fuente: Wikipedia](img3.jpg){width="85%"}
+
+:::
+
+## Dos relatos de país
+
+Ante una propuesta de continuidad del proyecto progresista frente a un outsider de derecha que promete orden y ruptura. La pregunta es dónde vive cada uno de esos relatos.
+
+Aquí es donde los datos departamentales se vuelven indispensables. La primera forma de ver la fractura es ver el porcentaje de votos que obtuvo cada candidato en cada departamento se colorea cruzando el respaldo a Cepeda (eje vertical, azul) con el de De la Espriella (eje horizontal, rojo), sobre el total de votos válidos del territorio. La esquina oscura señala los departamentos donde ambos son fuertes a la vez —el voto polarizado y parejo—; los tonos azulados, dominio de Cepeda; los rojizos, de De la Espriella.
+
+```{r}
+#| label: fig-bivariado
+#| fig-cap: "Coropleta bivariada: respaldo a Cepeda (vertical) frente a De la Espriella (horizontal), como % de votos válidos por departamento."
+
+mapa_bi <- bi_class(mapa_datos, x = pct_abelardo, y = pct_cepeda,
+                    style = "quantile", dim = 3)
+
+# Extract numerical quantile limits from your data 
+valores_cortes <- bi_class_breaks(
+  mapa_datos, 
+  x = pct_abelardo, 
+  y = pct_cepeda, 
+  style = "quantile", 
+  dim = 3, 
+  dig_lab = 3,      # Number of decimal places to display
+  split = TRUE      # Set to TRUE to print numbers directly on the breaks
+)
+
+# Generate the legend object using the numeric cuts
+leyenda_ce <- bi_legend(
+  pal = "DkViolet",
+  dim = 3,
+  xlab = "De la Espriella (%)",
+  ylab = "Cepeda (%)",
+  size = 7,
+  breaks = valores_cortes, # Feeds the numbers directly to the grid lines
+  arrows = FALSE           # Removes the arrows to keep text clean
+)
+
+
+# Main Map Construction
+mapa_plot <- ggplot() + 
+  geom_sf(data = mapa_bi, aes(fill = bi_class), color = "white", linewidth = 0.2, show.legend = FALSE) + 
+  bi_scale_fill(pal = "DkViolet", dim = 3) + 
+  labs(title = "Resultados por departamento" ,
+  subtitle = "(% de votos válidos)") + 
+  bi_theme() + 
+  theme(plot.title = element_text(face = "bold", size = 18), 
+        plot.subtitle = element_text(size = 11, color = "grey30"))
+
+# Draw Canvas Combining the Map and the New Numeric Legend
+ggdraw() + 
+  draw_plot(mapa_plot, 0, 0, 1, 1) + 
+  draw_plot(leyenda_ce, x = 0.02, y = 0.08, width = 0.26, height = 0.26) 
+```
+
+El mapa reproduce fracturas viejas del país. De los 33 territorios analizados (32 departamentos más Bogotá), Cepeda ganó en 18 y De la Espriella en 15. Cepeda dominó la periferia y el litoral; ganó en la región Caribe —Bolívar, Cesar, Córdoba, La Guajira, Magdalena y Sucre— y se impuso también en Chocó, Guainía, Putumayo, San Andrés, Valle del Cauca, Vaupés y Vichada, con sus mayores márgenes en Vaupés (75,52 %) y Putumayo (71,36 %). Son los territorios étnicos, periféricos y golpeados por el conflicto, donde su biografía de defensor de víctimas resuena con fuerza. De la Espriella, en cambio, conquistó el corazón andino y conservador: su triunfo más resonante fue Antioquia, bastión del uribismo, donde obtuvo 54,4 % frente al 25,4 % de Cepeda; en Norte de Santander la diferencia fue aún más extrema (70,7 % contra 17,4 %) y en Casanare alcanzó el 61,25 %.
+
+Pero la segunda vuelta no se decide en los feudos ya conquistados, sino entre quienes votaron por un tercero. Por eso vale la pena aislar el voto que **no** fue ni para Cepeda ni para De la Espriella y ver cómo se reparte. Agrupo ese universo en tres bloques —la derecha restante (Valencia y Uribe Londoño), el centro (Fajardo, López, Barreras, Lizcano) y otros/blanco— y cruzo los dos primeros en un segundo bivariado: dónde pesa más la derecha-resto (eje horizontal) frente al centro (eje vertical).
+
+```{r}
+#| label: fig-restante
+#| fig-cap: "Distribución del voto que no fue para Cepeda ni De la Espriella: derecha restante (horizontal) frente al centro (vertical), como % del voto restante."
+
+mapa_bi2 <- bi_class(mapa_datos, x = pct_derecha_resto, y = pct_centro,
+                     style = "quantile", dim = 3)
+
+# Extract numerical quantile limits from your data 
+valores_cortes <- bi_class_breaks(
+  mapa_datos, 
+  x = pct_derecha_resto, 
+  y = pct_centro, 
+  style = "quantile", 
+  dim = 3, 
+  dig_lab = 3,      # Number of decimal places to display
+  split = TRUE      # Set to TRUE to print numbers directly on the breaks
+)
+
+# Generate the legend object using the numeric cuts
+leyenda_ce <- bi_legend(
+  pal = "GrPink2",
+  dim = 3,
+  xlab = "(%) Derecha",
+  ylab = "(%) Centro",
+  size = 7,
+  breaks = valores_cortes, # Feeds the numbers directly to the grid lines
+  arrows = FALSE           # Removes the arrows to keep text clean
+)
+
+mapa_plot2 <- ggplot() +
+  geom_sf(data = mapa_bi2, aes(fill = bi_class),
+          color = "white", linewidth = 0.2, show.legend = FALSE) +
+  bi_scale_fill(pal = "GrPink2", dim = 3) +
+  labs(title = "Resultados de los votos restantes",
+       subtitle = "(% de votos válidos)") + 
+  bi_theme() +
+  theme(plot.title = element_text(face = "bold", size = 18),
+        plot.subtitle = element_text(size = 11, color = "grey30"))
+
+leyenda2 <- bi_legend(pal = "GrPink2", dim = 3,
+                      xlab = "(%) Derecha",
+                      ylab = "(%) Centro", size = 7)
+
+ggdraw() +
+  draw_plot(mapa_plot2, 0, 0, 1, 1) +
+  draw_plot(leyenda_ce, x = 0.02, y = 0.08, width = 0.24, height = 0.24)
+```
+
+Este mapa es la clave del optimismo de De la Espriella. En buena parte del país andino, el voto sobrante es de derecha, y con el respaldo explícito de Valencia ese caudal tiende naturalmente hacia él. Pero hay excepciones que importan. En las grandes ciudades y en varios departamentos del sur y la costa, el centro pesa más, y ese votante no se traslada con la misma docilidad. 
+
+## La tierra no vota
+
+Hay un problema con cualquier mapa geográfico: el tamaño en el territorio no es el tamaño electoral. Vaupés es inmenso y aporta nueve mil votos; Bogotá cabe en un punto y aporta casi cuatro millones. Para corregir esa ilusión uso un **cartograma contiguo**, que infla o encoge cada departamento según su total de votos pero conserva su silueta y sus fronteras pegadas, de modo que el país sigue siendo reconocible aunque deformado. El color mantiene el bivariado Cepeda vs De la Espriella; y Centro vs Derecha.
+
+
+```{r}
+#| label: fig-cartograma
+#| fig-cap: "Cartograma contiguo: el área de cada departamento se deforma según su total de votos válidos, conservando las fronteras."
+#| 
+# El cartograma necesita un CRS proyectado en metros. Usamos World Mercator
+# (EPSG:3395); simplificamos la geometría para que cartogram_cont converja rápido.
+mapa_cont <- mapa_bi %>%
+  st_transform(crs = 3395) %>%
+  st_simplify(dTolerance = 1000) %>%
+  st_make_valid()
+
+# Cartograma contiguo (deforma las siluetas manteniendo la contigüidad).
+# itermax controla la calidad de la deformación; 8–15 suele bastar.
+library(ggplot2)
+library(patchwork)
+library(cowplot)
+library(sf)
+library(biscale) # Assuming bi_class functions are from biscale
+
+# --- MAP PANEL 1 ---
+carto <- cartogram_cont(mapa_cont, weight = "total_validos", itermax = 12)
+
+cortes_ce <- bi_class_breaks(carto, x = pct_abelardo, y = pct_cepeda,
+                             style = "quantile", dim = 3, dig_lab = 3, split = TRUE)
+
+leyenda_cnum1 <- bi_legend(pal = "DkViolet2", dim = 3,
+                          xlab = "(%) De la Espriella", ylab = "(%) Cepeda",
+                          size = 7, breaks = cortes_ce, arrows = FALSE)
+
+carto_plot1 <- ggplot() +
+  geom_sf(data = carto, aes(fill = bi_class), color = "white", linewidth = 0.2, show.legend = FALSE) +
+  bi_scale_fill(pal = "DkViolet2", dim = 3) +
+  bi_theme() +
+  coord_sf(expand = FALSE) + # 1. Forces the map bounds to trim extra canvas space
+  theme(
+    plot.margin = margin(0, 0, 0, 0, "pt") # 2. Removes internal padding from the plot
+  )
+
+m1 <- ggdraw() +
+  draw_plot(carto_plot1, 0, 0, 1, 1) +
+  draw_plot(leyenda_cnum1, x = 0.02, y = 0.08, width = 0.26, height = 0.26)
+
+
+# --- MAP PANEL 2 ---
+cortes_ce2 <- bi_class_breaks(carto, x = pct_derecha_resto, y = pct_centro,
+                             style = "quantile", dim = 3, dig_lab = 3, split = TRUE)
+
+leyenda_cnum2 <- bi_legend(pal = "GrPink2", dim = 3,
+                          xlab = "(%) Derecha", ylab = "(%) Centro",
+                          size = 7, breaks = cortes_ce2, arrows = FALSE)
+
+carto_plot2 <- ggplot() +
+  geom_sf(data = carto, aes(fill = bi_class), color = "white", linewidth = 0.2, show.legend = FALSE) +
+  bi_scale_fill(pal = "GrPink2", dim = 3) +
+  bi_theme() +
+  coord_sf(expand = FALSE) + # 1. Forces the map bounds to trim extra canvas space
+  theme(
+    plot.margin = margin(0, 0, 0, 0, "pt") # 2. Removes internal padding from the plot
+  )
+
+m2 <- ggdraw() +
+  draw_plot(carto_plot2, 0, 0, 1, 1) +
+  draw_plot(leyenda_cnum2, x = 0.02, y = 0.08, width = 0.26, height = 0.26)
+
+
+# --- COMBINE WITH PATCHWORK ---
+m1 + m2 + plot_annotation(
+  title = "La tierra no vota",
+  subtitle = "área deformada según el total de votos válidos",
+  theme = theme(
+    plot.title = element_text(face = "bold", size = 18, hjust = 0.5),
+    # 3. Uses a strong negative bottom margin on the subtitle to pull maps upward
+    plot.subtitle = element_text(size = 11, color = "grey30", hjust = 0.5, 
+                                 margin = margin(b = -40, unit = "pt")), 
+    # Global padding tweak
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10, unit = "pt")
+  )
+)
+
+
+```
+
+Visto así, el mapa cambia de mensaje. Los grandes bloques azulados de Bogotá, Valle, Atlántico y Bolívar —donde ganó Cepeda— se hinchan y equilibran el peso del bloque rojo de Antioquia, Santander y Cundinamarca, mientras la Amazonía y la Orinoquía, enormes en el mapa real, se contraen hasta casi desaparecer. La elección no se gana por número de departamentos ni por extensión, sino por el tamaño del electorado que cada uno contiene, y ahí la partida está mucho más pareja de lo que sugiere el mapa convencional.
+
+Siguiendo esta misma lógica para los votos por restantes, la lectura es inmediata: la segunda vuelta se decide en los departamentos que combinan **muchos votos en juego** con **márgenes estrechos**. El mayor botín de votos libres está concentrado en pocos lugares: Antioquia (638.128 votos restantes), Bogotá (496.357), Cundinamarca (275.241) y Valle del Cauca (272.993). Solo esos cuatro territorios concentran más de 1,6 millones de votos que pueden cambiar de dueño.
+
+```{r}
+#| label: fig-campo-batalla
+#| fig-cap: "Cartograma del botín: cada departamento se deforma según los votos que no fueron a Cepeda ni De la Espriella (los que están en juego). El color es la diferencia porcentual Cepeda − De la Espriella en primera vuelta: Azul = ventaja de Cepeda, Rojo = ventaja de De la Espriella, blanco = empate técnico."
+
+# --- Variables: botín (votos en juego) y diferencia entre punteros ---------
+mapa_campo <- mapa_datos %>%
+  mutate(
+    botin = votos_derecha_resto + votos_centro + votos_otros_blanco,  # votos libres
+    dif   = pct_cepeda - pct_abelardo   # + => Cepeda ; - => De la Espriella
+  ) %>%
+  st_transform(crs = 3395) %>%          # World Mercator (metros) para el cartograma
+  st_simplify(dTolerance = 1000) %>%
+  st_make_valid()
+
+# --- Cartograma contiguo: el BOTÍN es lo que distorsiona -------------------
+carto_campo <- cartogram_cont(mapa_campo, weight = "botin", itermax = 12)
+
+# límite simétrico para que el blanco quede exactamente en la diferencia 0
+lim <- max(abs(carto_campo$dif), na.rm = TRUE)
+
+# --- Mapa ------------------------------------------------------------------
+ggplot(carto_campo) +
+  geom_sf(aes(fill = dif), color = "white", linewidth = 0.25) +
+  scale_fill_gradient2(
+    low = "#b2182b", mid = "#f7f7f7", high = "#2166ac",
+    midpoint = 0, limits = c(-65, 65),
+    name = "Margen de votación en puntos porcentuales",
+    breaks = c(-65, 0, 65),
+    labels = c("65\nDe la Espriella", "0\nEmpate", "65\nCepeda"),
+    # Customizes the horizontal colorbar layout
+    guide = guide_colorbar(
+      title.position = "top",   # Places title above the colorbar
+      title.hjust = 0.5,        # Centers the title text over the bar
+      barwidth = unit(12, "cm"), # Makes the colorbar wider (adjust numeric value as needed)
+      barheight = unit(0.4, "cm")
+    )
+  ) +
+  # etiquetar los cuatro mayores botines, que el párrafo menciona por nombre
+  geom_sf_text(
+    data = carto_campo %>% slice_max(botin, n = 4),
+    aes(label = departamento), size = 3, fontface = "bold", color = "grey15"
+  ) +
+  labs(
+    title = "El campo de batalla: dónde hay más en juego",
+    subtitle = "El tamaño representa lo votos en juego",
+  ) +
+  theme_void() +
+  theme(
+    plot.title    = element_text(face = "bold", size = 18, hjust = 0.5),
+    plot.subtitle = element_text(size = 11, color = "grey30", hjust = 0.5),
+    legend.position = "bottom"
+  )
+
+```
+
+Para De la Espriella la matemática parece favorable: en Antioquia, de esos 638.000 votos libres, casi 300.000 fueron a candidatos de derecha y solo 245.000 al centro. Si esa derecha se traslada en bloque, amplía una ventaja ya considerable. Pero el segundo mayor depósito es Bogotá, y allí la historia se invierte: Cepeda ganó la primera vuelta (45,5 % contra 41,2 %) y el centro y el voto en blanco pesan mucho más que en Antioquia. Bogotá no es Medellín, y el voto de Valencia no se comporta igual en una ciudad que el progresismo ha gobernado. El centro urbano es la batalla que De la Espriella debe ganar y Cepeda no puede perder.
+
+Si tuviera que apostar dónde se concentrarán las campañas, miraría tres frentes que los datos dibujan con nitidez.
+
+El **primer frente es Antioquia y el eje andino-conservador** (Cundinamarca, Santander, Boyacá, Caldas, Tolima, Norte de Santander), el músculo de De la Espriella, donde ganó casi todo y el voto restante le es afín. Su tarea no es convencer, sino movilizar. La de Cepeda aquí es de contención.
+
+El **segundo frente es el Caribe y el Pacífico**, territorio de Cepeda. Ganó toda la costa y el litoral con márgenes amplios, pero amplio no es tranquilo. La región combina alta volatilidad, abstención y maquinarias regionales pragmáticas que pueden inclinar balanzas.
+
+El **tercer frente, el decisivo, son las grandes ciudades y los empates técnicos**. Bogotá y Valle, los dos gigantes que Cepeda ganó, son donde el voto del centro decide. Y luego la franja de departamentos resueltos por un puñado de votos. En Cesar el margen fue de apenas 617 votos, en Vichada 435, en San Andrés 143. Pequeños en volumen, pero en una elección que podría definirse por menos de lo que separó a Petro de Hernández en 2022, ninguno sobra.
+
+Lo que estos datos sugieren no es un pronóstico, sino un campo de batalla. De la Espriella llega con la ventaja numérica y con un voto de derecha que, sumado, lo acerca al 50 %. Cepeda llega con un piso sólido en la periferia y con la necesidad imperiosa de seducir a un centro que no votó por ninguno de los dos. El mapa de la primera vuelta nos dice de dónde viene cada candidato; el de la segunda lo escribirán los departamentos donde todavía no ha ganado nadie del todo: Antioquia para confirmar, Bogotá para sorprender, y esa franja de territorios donde un puñado de votos vale una presidencia. El 21 de junio sabremos cuál de los dos relatos de país supo leer mejor el mapa.
+
+---
+
+::: {.callout-note collapse="true"}
+## Nota metodológica
+
+El análisis usa los resultados por departamento de la primera vuelta del 31 de mayo de 2026. Los porcentajes departamentales se calculan sobre los votos válidos de cada territorio. El "voto restante" agrupa todos los sufragios que no fueron para Cepeda ni De la Espriella, repartidos en tres bloques: derecha-resto (Valencia, Uribe Londoño), centro (Fajardo, López, Barreras, Lizcano) y otros/blanco (Botero, Macollins, Matamoros, votos en blanco). La geometría proviene de un GeoJSON público de departamentos; el cartograma de Dorling se calcula reproyectando a EPSG:3116 (Origen Nacional de Colombia). La categoría "Consulados" se excluyó por no constituir una unidad geográfica del mapa. El cartograma de Dorling usa una relajación de fuerzas, por lo que su acomodo no es perfectamente determinista, aunque los tamaños relativos sí lo son.
+:::
